@@ -12,21 +12,33 @@ logger = get_logger(__name__)
 _chroma_client: Any = None
 
 
-def get_chroma_client() -> chromadb.PersistentClient:
-    """Returns a singleton ChromaDB persistent client."""
+def get_chroma_client() -> Any:
+    """Returns a singleton ChromaDB client with fallback to EphemeralClient."""
     global _chroma_client
     if _chroma_client is None:
-        _chroma_client = chromadb.PersistentClient(
-            path=settings.chroma_persist_dir,
-            settings=ChromaSettings(
-                anonymized_telemetry=False,
-                allow_reset=True,
-            ),
-        )
-        logger.info(
-            "ChromaDB client initialized",
-            persist_dir=settings.chroma_persist_dir,
-        )
+        try:
+            _chroma_client = chromadb.PersistentClient(
+                path=settings.chroma_persist_dir,
+                settings=ChromaSettings(
+                    anonymized_telemetry=False,
+                    allow_reset=True,
+                ),
+            )
+            logger.info(
+                "ChromaDB client initialized",
+                persist_dir=settings.chroma_persist_dir,
+            )
+        except Exception as exc:
+            logger.warning(
+                "Persistent ChromaDB client failed, using EphemeralClient fallback",
+                error=str(exc),
+            )
+            _chroma_client = chromadb.EphemeralClient(
+                settings=ChromaSettings(
+                    anonymized_telemetry=False,
+                    allow_reset=True,
+                ),
+            )
     return _chroma_client
 
 

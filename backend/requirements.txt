@@ -11,16 +11,13 @@ pydantic-settings==2.6.1
 sqlalchemy[asyncio]==2.0.36
 alembic==1.14.0
 asyncpg==0.30.0
-psycopg2-binary==2.9.10
 
-# Vector DB & Local Embeddings
+# Vector DB
 chromadb==0.5.23
-fastembed==0.4.2
 
 # Redis + Task Queue
 redis==5.2.1
 celery==5.4.0
-flower==2.0.1
 
 # AI Providers
 google-genai==0.1.0
@@ -33,11 +30,9 @@ pymupdf==1.24.14
 python-docx==1.1.2
 openpyxl==3.1.5
 pillow==10.4.0
-pytesseract==0.3.13
 rank-bm25==0.2.2
 
 # Utilities
-python-magic-bin==0.4.14
 aiofiles==24.1.0
 httpx==0.28.1
 structlog==24.4.0
