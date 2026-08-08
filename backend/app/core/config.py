@@ -81,11 +81,11 @@ class Settings(BaseSettings):
     celery_result_backend: str = "redis://localhost:6379/1"
 
     # ─── ChromaDB ─────────────────────────────────────────────────────
-    chroma_persist_dir: str = "./chroma_data"
+    chroma_persist_dir: str = "/tmp/chroma_data"
     chroma_collection_name: str = "document_chunks"
 
     # ─── Storage ──────────────────────────────────────────────────────
-    upload_dir: str = "./uploads"
+    upload_dir: str = "/tmp/uploads"
     max_upload_size_mb: int = 50
 
     @property

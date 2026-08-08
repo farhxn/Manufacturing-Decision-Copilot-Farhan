@@ -31,13 +31,19 @@ async def lifespan(app: FastAPI):
     )
 
     # Ensure upload directory exists
-    os.makedirs(settings.upload_dir, exist_ok=True)
-    os.makedirs(settings.chroma_persist_dir, exist_ok=True)
-    logger.info("Storage directories ready", upload_dir=settings.upload_dir)
+    try:
+        os.makedirs(settings.upload_dir, exist_ok=True)
+        os.makedirs(settings.chroma_persist_dir, exist_ok=True)
+        logger.info("Storage directories ready", upload_dir=settings.upload_dir)
+    except Exception as e:
+        logger.warning("Storage directory creation skipped", error=str(e))
 
     # Initialize ChromaDB client (creates collection if needed)
-    get_chroma_client()
-    logger.info("ChromaDB initialized")
+    try:
+        get_chroma_client()
+        logger.info("ChromaDB initialized")
+    except Exception as e:
+        logger.warning("ChromaDB initialization deferred", error=str(e))
 
     yield
 
