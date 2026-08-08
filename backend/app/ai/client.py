@@ -20,8 +20,12 @@ from __future__ import annotations
 
 from typing import Any
 
-from pydantic_ai import Agent
-from pydantic_ai.models import Model
+try:
+    from pydantic_ai import Agent
+    from pydantic_ai.models import Model
+except Exception as _ai_import_err:
+    Agent = Any  # type: ignore
+    Model = Any  # type: ignore
 
 from app.core.config import settings
 from app.core.logging import get_logger
