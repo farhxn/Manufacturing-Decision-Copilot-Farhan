@@ -37,7 +37,7 @@ async def health_check() -> dict:
     redis_ok = await check_redis_health()
     chroma_ok = check_chroma_health()
 
-    all_healthy = db_ok and redis_ok and chroma_ok
+    all_healthy = db_ok and chroma_ok
     status_code = "ok" if all_healthy else "degraded"
 
     logger.info(
@@ -49,11 +49,11 @@ async def health_check() -> dict:
     )
 
     return {
-        "success": all_healthy,
+        "success": db_ok,
         "status": status_code,
         "services": {
             "database": "ok" if db_ok else "error",
-            "redis": "ok" if redis_ok else "error",
+            "redis": "ok" if redis_ok else "disabled",
             "chroma": "ok" if chroma_ok else "error",
         },
     }
