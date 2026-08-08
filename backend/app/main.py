@@ -67,9 +67,15 @@ app = FastAPI(
 )
 
 # ── CORS ─────────────────────────────────────────────────────────────────────
+origins = settings.origins_list + [
+    "https://manufacturing-decision-copilot-farh.vercel.app",
+    "https://manufacturing-decision-copilot-farh-eight.vercel.app",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.origins_list,
+    allow_origins=["*"] if "*" in settings.origins_list else origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

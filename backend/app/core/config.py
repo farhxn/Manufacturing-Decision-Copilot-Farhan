@@ -22,7 +22,7 @@ class Settings(BaseSettings):
 
     # ─── API ─────────────────────────────────────────────────────────
     api_prefix: str = "/api/v1"
-    allowed_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
+    allowed_origins: str = "http://localhost:3000,http://127.0.0.1:3000,https://manufacturing-decision-copilot-farh.vercel.app,*"
 
     @property
     def origins_list(self) -> list[str]:
