@@ -1,0 +1,247 @@
+%PDF-1.4
+%âãÏÓ
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R 7 0 R 9 0 R] /Count 3 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 1549 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 72 750 Tm
+(MOTOR HOUSING COMPONENT â€” TECHNICAL SPECIFICATION) Tj
+1 0 0 1 72 734 Tm
+(Document No.: MHA-2026-Rev3     Status: Released) Tj
+1 0 0 1 72 718 Tm
+(Issue Date: 2026-07-15           Revision: 3) Tj
+1 0 0 1 72 702 Tm
+() Tj
+1 0 0 1 72 686 Tm
+(1. SCOPE) Tj
+1 0 0 1 72 670 Tm
+(This specification defines requirements for the precision motor housing) Tj
+1 0 0 1 72 654 Tm
+(assembly used in the Series 400 electric motor product line.) Tj
+1 0 0 1 72 638 Tm
+(All suppliers must satisfy ALL requirements herein before shipments begin.) Tj
+1 0 0 1 72 622 Tm
+() Tj
+1 0 0 1 72 606 Tm
+(2. APPLICABLE STANDARDS) Tj
+1 0 0 1 72 590 Tm
+(  - ISO 2768-1   \(General tolerances â€” linear and angular dimensions\)) Tj
+1 0 0 1 72 574 Tm
+(  - ISO 1302     \(Surface texture indication\)) Tj
+1 0 0 1 72 558 Tm
+(  - ASTM B209    \(Aluminum alloy sheet and plate\)) Tj
+1 0 0 1 72 542 Tm
+(  - IPC-A-610    \(Acceptability of electronic assemblies\)) Tj
+1 0 0 1 72 526 Tm
+(  - RoHS 2011/65/EU  \(Restriction of hazardous substances, EU market\)) Tj
+1 0 0 1 72 510 Tm
+(  - REACH         \(Chemical compliance, EU market\)) Tj
+1 0 0 1 72 494 Tm
+() Tj
+1 0 0 1 72 478 Tm
+(3. MATERIAL REQUIREMENTS) Tj
+1 0 0 1 72 462 Tm
+(  Base Material:    Aluminum Alloy 6061-T6 per ASTM B209) Tj
+1 0 0 1 72 446 Tm
+(  Surface Finish:   Hard anodize 25 micron min, MIL-A-8625 Type III) Tj
+1 0 0 1 72 430 Tm
+(  Corrosion:        Salt spray 500 hours per ASTM B117) Tj
+1 0 0 1 72 414 Tm
+(  Alternate alloys: ADC12, A380, LM25, AlSi9Cu3 â€” prior approval needed) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+6 0 obj
+<< /Length 1985 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 72 750 Tm
+(4. DIMENSIONAL REQUIREMENTS) Tj
+1 0 0 1 72 734 Tm
+(  Overall Envelope:    L 180mm x W 120mm x H 95mm) Tj
+1 0 0 1 72 718 Tm
+(  Wall Thickness:      3.5mm +/- 0.2mm) Tj
+1 0 0 1 72 702 Tm
+(  Bore Diameter:       52.000mm +0.025/-0.000mm  \(H7 fit\)) Tj
+1 0 0 1 72 686 Tm
+(  Mounting Hole PCD:   100mm +/- 0.05mm) Tj
+1 0 0 1 72 670 Tm
+(  Surface Roughness:   Ra 1.6 max on sealing surfaces) Tj
+1 0 0 1 72 654 Tm
+(  Flatness:            0.05mm on mating faces) Tj
+1 0 0 1 72 638 Tm
+() Tj
+1 0 0 1 72 622 Tm
+(5. MANDATORY CERTIFICATION REQUIREMENTS) Tj
+1 0 0 1 72 606 Tm
+(  REQUIRED:   ISO 9001:2015  \(quality management system\)) Tj
+1 0 0 1 72 590 Tm
+(  PREFERRED:  AS9100D  \(for aerospace-grade variants only\)) Tj
+1 0 0 1 72 574 Tm
+(  REQUIRED:   RoHS Compliant  \(all variants shipped to EU customers\)) Tj
+1 0 0 1 72 558 Tm
+(  Expired certifications: NOT accepted. Suppliers must provide current cert.) Tj
+1 0 0 1 72 542 Tm
+() Tj
+1 0 0 1 72 526 Tm
+(6. SUPPLIER QUALIFICATION) Tj
+1 0 0 1 72 510 Tm
+(  First Article Inspection \(FAI\): Required for all new or re-qualified suppliers) Tj
+1 0 0 1 72 494 Tm
+(  Incoming Inspection AQL:         1.0 \(critical dims\), 2.5 \(major features\)) Tj
+1 0 0 1 72 478 Tm
+(  CMM Dimensional Report:          Required with each production lot) Tj
+1 0 0 1 72 462 Tm
+(  Material Test Certificate:       Required per lot \(heat number traceability\)) Tj
+1 0 0 1 72 446 Tm
+(  Annual Supplier Audit:           Required for Preferred Supplier status) Tj
+1 0 0 1 72 430 Tm
+() Tj
+1 0 0 1 72 414 Tm
+(7. DISQUALIFICATION CONDITIONS) Tj
+1 0 0 1 72 398 Tm
+(  - ISO 9001:2015 not held OR expired) Tj
+1 0 0 1 72 382 Tm
+(  - Defect rate > 10% on any previous contract) Tj
+1 0 0 1 72 366 Tm
+(  - Failed FAI without corrective action within 30 days) Tj
+1 0 0 1 72 350 Tm
+(  - Single-source dependencies without approved contingency plan) Tj
+1 0 0 1 72 334 Tm
+(  - Country risk score below 60/100 \(procurement policy PR-2026-04\)) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 6 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+8 0 obj
+<< /Length 3425 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 72 750 Tm
+(APPENDIX A â€” SUPPLIER QUALIFICATION AND APPROVAL PROCESS) Tj
+1 0 0 1 72 734 Tm
+() Tj
+1 0 0 1 72 718 Tm
+(A1. NEW SUPPLIER QUALIFICATION) Tj
+1 0 0 1 72 702 Tm
+(   Step 1: Supplier Self-Assessment Questionnaire \(SAQ\) â€” returned within 10 days) Tj
+1 0 0 1 72 686 Tm
+(   Step 2: Quality Management System documentation review) Tj
+1 0 0 1 72 670 Tm
+(   Step 3: On-site audit \(for orders > USD 50,000/year or safety-critical parts\)) Tj
+1 0 0 1 72 654 Tm
+(   Step 4: First Article Inspection \(FAI\) per AS9102 or equivalent) Tj
+1 0 0 1 72 638 Tm
+(   Step 5: Production Part Approval Process \(PPAP\) Level 3 minimum) Tj
+1 0 0 1 72 622 Tm
+(   Step 6: Approved Supplier List \(ASL\) entry â€” valid 3 years with annual review) Tj
+1 0 0 1 72 606 Tm
+() Tj
+1 0 0 1 72 590 Tm
+(A2. FIRST ARTICLE INSPECTION REQUIREMENTS) Tj
+1 0 0 1 72 574 Tm
+(   Balloon drawing with all dimensions inspected and recorded) Tj
+1 0 0 1 72 558 Tm
+(   Material test certificate with heat number traceability) Tj
+1 0 0 1 72 542 Tm
+(   Surface finish measurement report \(Ra on all critical surfaces\)) Tj
+1 0 0 1 72 526 Tm
+(   Functional test report where applicable) Tj
+1 0 0 1 72 510 Tm
+(   Dimensional report: CMM or conventional measurement, all GD&T callouts) Tj
+1 0 0 1 72 494 Tm
+() Tj
+1 0 0 1 72 478 Tm
+(A3. ONGOING SUPPLIER PERFORMANCE METRICS) Tj
+1 0 0 1 72 462 Tm
+(   On-Time Delivery \(OTD\): Target >= 95% | Minimum acceptable: 90%) Tj
+1 0 0 1 72 446 Tm
+(   Incoming Quality Rate \(IQR\): Target <= 2% defect | Disqualify: > 10%) Tj
+1 0 0 1 72 430 Tm
+(   Corrective Action Response: <= 10 business days for 8D response) Tj
+1 0 0 1 72 414 Tm
+(   Customer Satisfaction Score: Tracked quarterly via Supplier Scorecard) Tj
+1 0 0 1 72 398 Tm
+(   Annual Business Review: Mandatory for all suppliers > USD 100K/year) Tj
+1 0 0 1 72 382 Tm
+() Tj
+1 0 0 1 72 366 Tm
+(A4. DISQUALIFICATION TRIGGERS) Tj
+1 0 0 1 72 350 Tm
+(   Lapse of mandatory certification \(ISO 9001:2015 or equivalent\)) Tj
+1 0 0 1 72 334 Tm
+(   Three consecutive OTD failures below 90%) Tj
+1 0 0 1 72 318 Tm
+(   Single-lot defect rate exceeding 10% incoming AQL) Tj
+1 0 0 1 72 302 Tm
+(   Failure to respond to Corrective Action Request within 30 days) Tj
+1 0 0 1 72 286 Tm
+(   Fraudulent documentation, sub-tier substitution without approval) Tj
+1 0 0 1 72 270 Tm
+(   Country risk rating below threshold per procurement policy PR-2026-04) Tj
+1 0 0 1 72 254 Tm
+() Tj
+1 0 0 1 72 238 Tm
+(A5. APPROVED TESTING LABORATORIES) Tj
+1 0 0 1 72 222 Tm
+(   For RoHS/REACH: Bureau Veritas, Intertek, SGS, TUV SUD, Eurofins) Tj
+1 0 0 1 72 206 Tm
+(   For dimensional: Any ISO/IEC 17025 accredited CMM facility) Tj
+1 0 0 1 72 190 Tm
+(   For material: Mill certificate + independent 3rd party for critical alloys) Tj
+1 0 0 1 72 174 Tm
+() Tj
+1 0 0 1 72 158 Tm
+(A6. PACKAGING AND LABELING REQUIREMENTS) Tj
+1 0 0 1 72 142 Tm
+(   Individual part protection: Bubble wrap or foam tray, no bare metal contact) Tj
+1 0 0 1 72 126 Tm
+(   Inner carton: Max 20 units, moisture-desiccant included) Tj
+1 0 0 1 72 110 Tm
+(   Outer carton: Double-wall corrugated, gross weight max 20 kg) Tj
+1 0 0 1 72 94 Tm
+(   Label \(minimum\): Part number, revision, quantity, date code, supplier ID, PO#) Tj
+1 0 0 1 72 78 Tm
+(   Country of origin marking: Per importing country requirements) Tj
+1 0 0 1 72 62 Tm
+(   Special handling: Fragile, this side up, humidity-sensitive as applicable) Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 8 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000133 00000 n 
+0000000230 00000 n 
+0000001831 00000 n 
+0000001957 00000 n 
+0000003994 00000 n 
+0000004120 00000 n 
+0000007597 00000 n 
+trailer
+<< /Size 10 /Root 1 0 R >>
+startxref
+7723
+%%EOF
