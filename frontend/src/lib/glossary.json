@@ -1,0 +1,27 @@
+{
+  "rag": {
+    "term": "RAG",
+    "plainLabel": "Source Excerpt Retrieval",
+    "tooltip": "Retrieval-Augmented Generation searches through uploaded quotation PDFs to extract exact evidence passages without generating unverified assumptions."
+  },
+  "vector": {
+    "term": "Vector Search",
+    "plainLabel": "Semantic Indexing",
+    "tooltip": "Indexes document text semantically so search finds relevant clauses even when exact wording differs."
+  },
+  "chunk": {
+    "term": "Chunk",
+    "plainLabel": "Source Excerpt",
+    "tooltip": "A specific paragraph or table passage extracted directly from an uploaded vendor document."
+  },
+  "deterministic": {
+    "term": "Deterministic Rule Engine",
+    "plainLabel": "Mathematical Scoring Engine",
+    "tooltip": "Calculates composite decision scores using fixed, auditable formulas rather than non-deterministic AI outputs."
+  },
+  "compositeScore": {
+    "term": "Composite Score",
+    "plainLabel": "Decision Score",
+    "tooltip": "Weighted aggregate score (0 to 100) combining Landed Cost, Delivery Time, Risk Index, Quality, and Compliance."
+  }
+}

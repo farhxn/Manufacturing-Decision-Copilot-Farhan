@@ -1,0 +1,39 @@
+# Exclude docs and agents per user instruction
+docs/
+.agents/
+
+# Environment files
+.env
+.env.local
+*.env
+backend/.env
+frontend/.env.local
+
+# Node dependencies & build outputs
+node_modules/
+frontend/node_modules/
+.next/
+frontend/.next/
+out/
+build/
+dist/
+
+# Python virtual environment & cache
+venv/
+backend/venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Local data & uploads
+chroma_data/
+backend/chroma_data/
+uploads/
+backend/uploads/
+*.log
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

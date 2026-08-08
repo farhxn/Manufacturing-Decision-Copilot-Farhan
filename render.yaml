@@ -1,0 +1,30 @@
+services:
+  # ─── FastAPI Backend Service ────────────────────────────────────────────────
+  - type: web
+    name: mdc-backend
+    runtime: python
+    buildCommand: pip install -r backend/requirements.txt && alembic -c backend/alembic.ini upgrade head
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --working-directory backend
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DATABASE_URL
+        sync: false # Set to Neon/Supabase PostgreSQL connection string in Render Dashboard
+      - key: REDIS_URL
+        sync: false # Set to Upstash Redis connection string in Render Dashboard
+      - key: CELERY_BROKER_URL
+        sync: false # Set to Upstash Redis connection string
+      - key: CELERY_RESULT_BACKEND
+        sync: false # Set to Upstash Redis connection string
+      - key: GEMINI_API_KEY
+        sync: false # Free Google Gemini API Key
+      - key: GEMINI_MODEL
+        value: gemini-2.0-flash
+      - key: ALLOWED_ORIGINS
+        sync: false # Set to your Vercel URL (e.g., https://manufacturing-decision-copilot.vercel.app)
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CHROMA_PERSIST_DIR
+        value: /tmp/chroma_data
+      - key: UPLOAD_DIR
+        value: /tmp/uploads
