@@ -8,6 +8,10 @@ version = "0.1.0"
 description = "Manufacturing Decision Copilot - Backend API"
 requires-python = ">=3.11"
 
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
