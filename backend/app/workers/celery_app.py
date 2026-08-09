@@ -5,6 +5,18 @@ Import this module — never instantiate Celery directly elsewhere.
 All tasks auto-discover from app.workers.document_worker.
 """
 
+import sys
+try:
+    import griffe
+    import griffe.enumerations
+    import griffe.models
+
+    sys.modules["_griffe"] = griffe
+    sys.modules["_griffe.enumerations"] = griffe.enumerations
+    sys.modules["_griffe.models"] = griffe.models
+except Exception:
+    pass
+
 from celery import Celery
 
 from app.core.config import settings
