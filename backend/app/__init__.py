@@ -2,8 +2,25 @@
 Manufacturing Decision Copilot - App Package Initialization
 """
 import sys
+import importlib.abc
+import importlib.util
 
-# Global patch for pydantic-ai 0.0.14 griffe import compatibility
+# MetaPathFinder to redirect any internal _griffe imports in pydantic-ai to griffe
+class _GriffeRedirectFinder(importlib.abc.MetaPathFinder):
+    def find_spec(self, fullname, path, target=None):
+        if fullname == "_griffe" or fullname.startswith("_griffe."):
+            real_name = "griffe" + fullname[7:]
+            try:
+                spec = importlib.util.find_spec(real_name)
+                if spec is not None:
+                    return spec
+            except Exception:
+                pass
+        return None
+
+if not any(isinstance(f, _GriffeRedirectFinder) for f in sys.meta_path):
+    sys.meta_path.insert(0, _GriffeRedirectFinder())
+
 try:
     import griffe
     import griffe.enumerations
