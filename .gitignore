@@ -1,6 +1,7 @@
-# Exclude docs and agents per user instruction
+# Exclude docs, agents, and sample data per user instruction
 docs/
 .agents/
+sample-data/
 
 # Environment files
 .env

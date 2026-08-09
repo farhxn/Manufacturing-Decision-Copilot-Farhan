@@ -2,6 +2,8 @@
 ## Manufacturing Decision Copilot
 ### Track: Manufacturing Procurement Intelligence
 
+🌐 **Live Production App:** [https://manufacturing-decision-copilot-farhan.vercel.app/dashboard](https://manufacturing-decision-copilot-farhan.vercel.app/dashboard)
+
 ---
 
 ## What We Built
@@ -26,7 +28,7 @@ Every item required by the submission brief is addressed in the documents below.
 
 | # | Required Deliverable | Document | Status |
 |---|---|---|---|
-| 1 | Working end-to-end prototype for one primary track | [Setup instructions](#3-setup-and-run) + live demo | ✅ |
+| 1 | Working end-to-end prototype for one primary track | [Live Demo App](https://manufacturing-decision-copilot-farhan.vercel.app/dashboard) + [Setup](#3-setup-and-run) | ✅ |
 | 2 | Source code and reproducible setup instructions | [Setup instructions](#3-setup-and-run) + `submission/02_data_source_manifest.md §5` | ✅ |
 | 3 | Concise architecture and data-flow explanation | [`submission/01_architecture_and_dataflow.md`](submission/01_architecture_and_dataflow.md) | ✅ |
 | 4 | Data/source manifest covering challenge pack and external inputs | [`submission/02_data_source_manifest.md`](submission/02_data_source_manifest.md) | ✅ |
@@ -150,8 +152,9 @@ SGTDP/
 │   ├── seed_db_production.py    # seeds 10 suppliers + 3 scenarios
 │   └── generate_production_pdfs.py
 ├── docs/                    # 22 specification documents
-├── submission/              # ← this directory (all 7 deliverables)
-└── .agents/rules/           # project constraints enforced by Kiro
+├── sample-data/             # challenge pack PDFs (gitignored)
+├── submission/              # hackathon submission documents (all deliverables)
+└── .agents/                 # Kiro agent rules (gitignored)
 ```
 
 ---

@@ -1,6 +1,8 @@
 # Submission Deliverables Index
 ## Manufacturing Decision Copilot
 
+🌐 **Live Production App:** [https://manufacturing-decision-copilot-farhan.vercel.app/dashboard](https://manufacturing-decision-copilot-farhan.vercel.app/dashboard)
+
 This directory contains the official hackathon submission documentation for **Manufacturing Decision Copilot**.
 
 ---
