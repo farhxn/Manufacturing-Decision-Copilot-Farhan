@@ -19,10 +19,17 @@ deterministic result (see recommendation_service.py).
 from __future__ import annotations
 
 import sys
+from typing import Any
+
 try:
     import griffe
+    import griffe.enumerations
+    import griffe.models
+
     sys.modules["_griffe"] = griffe
-except ImportError:
+    sys.modules["_griffe.enumerations"] = griffe.enumerations
+    sys.modules["_griffe.models"] = griffe.models
+except Exception:
     pass
 
 try:
