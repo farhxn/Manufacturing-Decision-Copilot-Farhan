@@ -208,6 +208,7 @@ export default function SupplierDetailPage() {
         isOpen={evidenceOpen}
         onClose={() => setEvidenceOpen(false)}
         recommendationId={evidenceId}
+        recommendation={rec}
         highlightPhrase={supplier.name}
       />
     </div>

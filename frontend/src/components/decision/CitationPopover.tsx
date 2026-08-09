@@ -11,6 +11,7 @@ interface CitationPopoverProps {
   chunkText: string;
   documentId?: string | null;
   verifiedDate?: string;
+  onOpenEvidence?: () => void;
   children: React.ReactNode;
 }
 
@@ -21,9 +22,18 @@ export const CitationPopover: React.FC<CitationPopoverProps> = ({
   chunkText,
   documentId,
   verifiedDate = 'Verified Today',
+  onOpenEvidence,
   children,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpenPdf = (e: React.MouseEvent) => {
+    if (!documentId && onOpenEvidence) {
+      e.preventDefault();
+      e.stopPropagation();
+      onOpenEvidence();
+    }
+  };
 
   return (
     <div
@@ -57,13 +67,22 @@ export const CitationPopover: React.FC<CitationPopoverProps> = ({
 
           <div className="pt-1 flex items-center justify-between text-[10px] text-[#858780]">
             <span className="truncate mr-2">Claim: {claim}</span>
-            <Link
-              href={documentId ? `/documents/${documentId}?page=${pageNumber}` : "/documents"}
-              target={documentId ? "_blank" : undefined}
-              className="text-[#B86B3D] hover:underline font-semibold flex items-center shrink-0"
-            >
-              Open PDF <ExternalLink className="w-2.5 h-2.5 ml-1" />
-            </Link>
+            {documentId ? (
+              <Link
+                href={`/documents/${documentId}?page=${pageNumber}`}
+                target="_blank"
+                className="text-[#B86B3D] hover:underline font-semibold flex items-center shrink-0 cursor-pointer"
+              >
+                Open PDF <ExternalLink className="w-2.5 h-2.5 ml-1" />
+              </Link>
+            ) : (
+              <button
+                onClick={handleOpenPdf}
+                className="text-[#B86B3D] hover:underline font-semibold flex items-center shrink-0 cursor-pointer"
+              >
+                Open PDF <ExternalLink className="w-2.5 h-2.5 ml-1" />
+              </button>
+            )}
           </div>
         </div>
       )}

@@ -16,6 +16,7 @@ import { DonutGauge } from '@/components/decision/DonutGauge';
 import { CitationPopover } from '@/components/decision/CitationPopover';
 import { ScoreBreakdown } from '@/components/decision/ScoreBreakdown';
 import { ReasoningPanel } from '@/components/decision/ReasoningPanel';
+import { EvidencePanel, getUniqueEvidenceCount } from '@/components/suppliers/EvidencePanel';
 import { DecisionTrace } from '@/components/decision/DecisionTrace';
 import { SupplierLandscape } from '@/components/decision/SupplierLandscape';
 import { SupplierComparison } from '@/components/decision/SupplierComparison';
@@ -28,6 +29,7 @@ import { getActiveWorkspaceId, useWorkspaceStore } from '@/store/workspaceStore'
 
 export default function DashboardPage() {
   const [isReasoningOpen, setIsReasoningOpen] = useState(false);
+  const [isEvidenceOpen, setIsEvidenceOpen] = useState(false);
   
   // React to workspace changes by subscribing to the store
   const activeWorkspaceId = useWorkspaceStore(state => state.activeWorkspaceId);
@@ -80,6 +82,15 @@ export default function DashboardPage() {
   const certText = rec?.pros?.[0] ?? 'Verified';
   const confidenceLabel = rec?.confidence_label ?? 'Medium';
   const confidenceBadge = confidenceLabel === 'High' ? 'success' : confidenceLabel === 'Medium' ? 'warning' : 'danger';
+
+  const defaultPros = rec?.ranking?.[0] ? [
+    `Top composite score of ${rec.ranking[0].final_score.toFixed(1)}/100 across evaluated suppliers`,
+    `Compliance score ${rec.ranking[0].scores.compliance_score.toFixed(0)}/100 verified against quality standards`,
+    `Low risk score of ${rec.ranking[0].scores.risk_score.toFixed(1)}/100 with unit landed cost of $${rec.ranking[0].scores.landed_cost.toFixed(2)}`,
+  ] : [];
+
+  const displayPros = (rec?.pros && rec.pros.length > 0) ? rec.pros.slice(0, 3) : defaultPros;
+  const evidenceCount = getUniqueEvidenceCount(rec);
 
   return (
     <div className="space-y-4 sm:space-y-6 max-w-7xl mx-auto pb-12 select-none">
@@ -145,7 +156,16 @@ export default function DashboardPage() {
           { label: 'Suppliers Evaluated', value: kpis?.supplier_count ?? 0, icon: Package, unit: '' },
           { label: 'Documents Indexed', value: kpis?.document_count ?? 0, icon: FileText, unit: '' },
           { label: 'Top Supplier Score', value: kpis?.top_supplier_score?.toFixed(1) ?? '—', icon: BarChart3, unit: '/100' },
-          { label: 'Avg Confidence', value: `${((kpis?.average_confidence ?? 0) * 100).toFixed(0)}`, icon: ShieldCheck, unit: '%' },
+          { 
+            label: 'Avg Confidence', 
+            value: (() => {
+              const raw = kpis?.average_confidence ?? 0;
+              const val = raw > 1 ? raw : raw * 100;
+              return val > 0 ? val.toFixed(1) : '—';
+            })(), 
+            icon: ShieldCheck, 
+            unit: '%' 
+          },
         ].map((kpi, i) => (
           <motion.div
             key={kpi.label}
@@ -201,6 +221,8 @@ export default function DashboardPage() {
               sourceDocument="AI Recommendation Engine"
               pageNumber={1}
               chunkText={rec?.summary ?? 'Recommendation summary generated based on evaluated documents.'}
+              documentId={rec?.pros_citations?.[0]?.document_id || rec?.ranking?.[0]?.citations?.compliance?.document_id}
+              onOpenEvidence={() => setIsEvidenceOpen(true)}
             >
               {rec?.summary ?? 'Loading recommendation summary…'}
             </CitationPopover>
@@ -234,6 +256,7 @@ export default function DashboardPage() {
                     sourceDocument={rec.ranking[0].citations?.landed_cost?.source_document || `${topSupplier} Master Agreement.pdf`}
                     pageNumber={rec.ranking[0].citations?.landed_cost?.page_number || 2}
                     chunkText={rec.ranking[0].citations?.landed_cost?.chunk_text || "The final landed cost per unit includes DDP shipping, packaging, and all applicable tariffs."}
+                    onOpenEvidence={() => setIsEvidenceOpen(true)}
                   >
                     ${rec.ranking[0].scores.landed_cost.toFixed(2)}
                   </CitationPopover>
@@ -255,6 +278,7 @@ export default function DashboardPage() {
                     sourceDocument={rec.ranking[0].citations?.compliance?.source_document || `${topSupplier} Quality Audit.pdf`}
                     pageNumber={rec.ranking[0].citations?.compliance?.page_number || 12}
                     chunkText={rec.ranking[0].citations?.compliance?.chunk_text || "Supplier meets all critical quality thresholds and maintains valid ISO 9001 certification."}
+                    onOpenEvidence={() => setIsEvidenceOpen(true)}
                   >
                     {rec.ranking[0].scores.compliance_score.toFixed(0)}/100
                   </CitationPopover>
@@ -269,24 +293,31 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* Pros list if AI narrative */}
-          {rec?.ai_narrative && rec.pros.length > 0 && (
-            <ul className="text-xs space-y-1">
-              {rec.pros.slice(0, 3).map((p, i) => (
-                <li key={i} className="flex items-start text-[var(--text-secondary)]">
-                  <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-[var(--success)] shrink-0 mt-0.5" />
-                  <CitationPopover
-                    claim={p}
-                    documentId={rec.pros_citations?.[i]?.document_id}
-                    sourceDocument={rec.pros_citations?.[i]?.source_document || `${topSupplier} Capability Matrix.pdf`}
-                    pageNumber={rec.pros_citations?.[i]?.page_number || i + 1}
-                    chunkText={rec.pros_citations?.[i]?.chunk_text || `Extracted advantage: ${p}. Verified by internal AI engine.`}
-                  >
-                    {p}
-                  </CitationPopover>
-                </li>
-              ))}
-            </ul>
+          {/* Key Evaluation Findings — Always rendered consistently */}
+          {rec && displayPros.length > 0 && (
+            <div className="space-y-1.5 py-1">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)] flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[var(--success)]" />
+                <span>Key Evaluation Findings</span>
+              </div>
+              <ul className="text-xs space-y-1.5">
+                {displayPros.map((p, i) => (
+                  <li key={i} className="flex items-start text-[var(--text-secondary)]">
+                    <CheckCircle2 className="w-3.5 h-3.5 mr-1.5 text-[var(--success)] shrink-0 mt-0.5" />
+                    <CitationPopover
+                      claim={p}
+                      documentId={rec.pros_citations?.[i]?.document_id || rec.ranking?.[0]?.citations?.compliance?.document_id}
+                      sourceDocument={rec.pros_citations?.[i]?.source_document || `${topSupplier} Capability Matrix.pdf`}
+                      pageNumber={rec.pros_citations?.[i]?.page_number || i + 1}
+                      chunkText={rec.pros_citations?.[i]?.chunk_text || `Extracted advantage: ${p}. Verified by evaluation engine.`}
+                      onOpenEvidence={() => setIsEvidenceOpen(true)}
+                    >
+                      {p}
+                    </CitationPopover>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-1">
@@ -297,10 +328,13 @@ export default function DashboardPage() {
               <Info className="w-3.5 h-3.5 mr-2 text-[var(--brand)]" />
               Why this supplier?
             </button>
-            <Link href="/documents" className="text-xs font-semibold text-[var(--brand)] hover:underline flex items-center justify-center sm:justify-start">
+            <button
+              onClick={() => setIsEvidenceOpen(true)}
+              className="text-xs font-semibold text-[var(--brand)] hover:underline flex items-center justify-center sm:justify-start cursor-pointer"
+            >
               <FileText className="w-3.5 h-3.5 mr-1" />
-              View evidence ({rec?.evidence_ids?.length ?? 0} excerpts)
-            </Link>
+              View evidence ({evidenceCount} excerpts)
+            </button>
           </div>
         </div>
 
@@ -324,7 +358,7 @@ export default function DashboardPage() {
               <div className="flex justify-between">
                 <span>Evidence IDs</span>
                 <span className="font-semibold text-[var(--text-primary)] num-tabular">
-                  {rec?.evidence_ids?.length ?? 0}
+                  {evidenceCount}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -363,6 +397,14 @@ export default function DashboardPage() {
         isOpen={isReasoningOpen} 
         onClose={() => setIsReasoningOpen(false)} 
         topSupplier={rec?.ranking?.[0]}
+        recommendation={rec}
+      />
+
+      {/* Evidence Drawer */}
+      <EvidencePanel
+        isOpen={isEvidenceOpen}
+        onClose={() => setIsEvidenceOpen(false)}
+        recommendationId={rec?.id ?? null}
         recommendation={rec}
       />
     </div>

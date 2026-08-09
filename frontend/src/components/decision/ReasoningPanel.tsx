@@ -5,6 +5,7 @@ import { CheckCircle2, ChevronDown, ChevronRight, FileText, ShieldCheck, DollarS
 
 import type { RankedSupplier, Recommendation } from '@/types';
 import { CitationPopover } from './CitationPopover';
+import { getUniqueEvidenceCount } from '@/components/suppliers/EvidencePanel';
 
 interface ReasoningPanelProps {
   isOpen: boolean;
@@ -88,7 +89,7 @@ export const ReasoningPanel: React.FC<ReasoningPanelProps> = ({
       title: 'Evidence Attribution & AI Analysis',
       icon: FileText,
       status: 'Verified' as const,
-      summary: `${recommendation.evidence_ids?.length || 0} verified supporting evidence excerpts mapped.`,
+      summary: `${getUniqueEvidenceCount(recommendation)} verified supporting evidence excerpts mapped.`,
       scoreContribution: `Confidence: ${(recommendation.confidence_score).toFixed(1)}%`,
       details: recommendation.pros.map((pro, idx) => ({
         text: pro,

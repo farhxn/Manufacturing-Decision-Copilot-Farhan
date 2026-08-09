@@ -21,6 +21,7 @@ export interface SupplierData {
 
 export const defaultSuppliers: SupplierData[] = [
   {
+    id: 'acme-precision-mfg',
     rank: 1,
     name: 'Acme Precision Mfg',
     country: 'Germany',
@@ -32,6 +33,7 @@ export const defaultSuppliers: SupplierData[] = [
     status: 'Recommended',
   },
   {
+    id: 'techforge-industries',
     rank: 2,
     name: 'TechForge Industries',
     country: 'Taiwan',
@@ -43,6 +45,7 @@ export const defaultSuppliers: SupplierData[] = [
     status: 'Eligible',
   },
   {
+    id: 'fasttrack-manufacturing',
     rank: 3,
     name: 'FastTrack Manufacturing',
     country: 'Mexico',
@@ -54,6 +57,7 @@ export const defaultSuppliers: SupplierData[] = [
     status: 'Eligible',
   },
   {
+    id: 'reliable-parts-co',
     rank: 4,
     name: 'Reliable Parts Co',
     country: 'India',
@@ -65,6 +69,7 @@ export const defaultSuppliers: SupplierData[] = [
     status: 'Eligible',
   },
   {
+    id: 'global-fabrication-ltd',
     rank: 5,
     name: 'Global Fabrication Ltd',
     country: 'China',
@@ -233,7 +238,7 @@ export const SupplierLandscape: React.FC<{ suppliers?: SupplierData[] }> = ({
                     </td>
                     <td className="py-3 px-4 text-center">
                       <Link
-                        href={`/suppliers/${s.rank}`}
+                        href={`/suppliers/${s.id ?? s.rank}`}
                         className="text-brand hover:text-brand-hover font-semibold inline-flex items-center"
                       >
                         Inspect <ExternalLink className="w-3 h-3 ml-1" />
