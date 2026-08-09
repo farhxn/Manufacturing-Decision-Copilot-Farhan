@@ -153,8 +153,7 @@ SGTDP/
 │   └── generate_production_pdfs.py
 ├── docs/                    # 22 specification documents
 ├── sample-data/             # challenge pack PDFs (gitignored)
-├── submission/              # hackathon submission documents (all deliverables)
-└── .agents/                 # Kiro agent rules (gitignored)
+└── submission/              # hackathon submission documents (all deliverables)
 ```
 
 ---
