@@ -23,7 +23,7 @@ celery==5.4.0
 # AI Providers
 google-genai==0.1.0
 openai==1.57.4
-pydantic-ai==0.0.14
+pydantic-ai[google]==0.0.14
 griffe>=0.36.0
 tiktoken==0.8.0
 

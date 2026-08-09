@@ -72,7 +72,11 @@ def get_model() -> Model:
         )
 
     # Default: Gemini
-    from pydantic_ai.models.google import GoogleModel
+    try:
+        from pydantic_ai.models.google import GoogleModel
+    except ImportError:
+        from pydantic_ai.models.gemini import GeminiModel as GoogleModel
+
     import os
     if settings.gemini_api_key:
         os.environ["GEMINI_API_KEY"] = settings.gemini_api_key
