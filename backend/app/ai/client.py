@@ -16,9 +16,39 @@ within that window the caller should fall back to a cached or
 deterministic result (see recommendation_service.py).
 """
 
-from __future__ import annotations
-
+import sys
+import types
 from typing import Any
+
+# 1. Fallback for opentelemetry._events if missing in installed opentelemetry package
+try:
+    import opentelemetry._events
+except ImportError:
+    otel_events = types.ModuleType("opentelemetry._events")
+    class Event:
+        def __init__(self, *args, **kwargs):
+            pass
+    otel_events.Event = Event
+    sys.modules["opentelemetry._events"] = otel_events
+
+# 2. Complete _griffe module aliasing for pydantic-ai compatibility
+try:
+    import griffe
+    sys.modules["_griffe"] = griffe
+    sys.modules["_griffe.enumerations"] = griffe
+    sys.modules["_griffe.models"] = griffe
+    sys.modules["_griffe.dataclasses"] = griffe
+    sys.modules["_griffe.expressions"] = griffe
+    sys.modules["_griffe.extensions"] = griffe
+    sys.modules["_griffe.agents"] = griffe
+    sys.modules["_griffe.docstrings"] = griffe
+
+    setattr(griffe, "enumerations", griffe)
+    setattr(griffe, "models", griffe)
+    setattr(griffe, "dataclasses", griffe)
+    setattr(griffe, "expressions", griffe)
+except Exception:
+    pass
 
 try:
     from pydantic_ai import Agent
@@ -108,12 +138,20 @@ def build_agent(
     -------
     A configured ``Agent`` instance.
     """
-    return Agent(
-        model=get_model(),
-        output_type=output_schema,
-        system_prompt=system_prompt,
-        retries=retries,
-    )
+    try:
+        return Agent(
+            model=get_model(),
+            result_type=output_schema,
+            system_prompt=system_prompt,
+            retries=retries,
+        )
+    except TypeError:
+        return Agent(
+            model=get_model(),
+            output_type=output_schema,
+            system_prompt=system_prompt,
+            retries=retries,
+        )
 
 
 async def run_agent(agent: Agent, user_prompt: str) -> Any:

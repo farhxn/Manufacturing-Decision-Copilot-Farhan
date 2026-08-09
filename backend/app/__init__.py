@@ -2,32 +2,34 @@
 Manufacturing Decision Copilot - App Package Initialization
 """
 import sys
-import importlib.abc
-import importlib.util
+import types
 
-# MetaPathFinder to redirect any internal _griffe imports in pydantic-ai to griffe
-class _GriffeRedirectFinder(importlib.abc.MetaPathFinder):
-    def find_spec(self, fullname, path, target=None):
-        if fullname == "_griffe" or fullname.startswith("_griffe."):
-            real_name = "griffe" + fullname[7:]
-            try:
-                spec = importlib.util.find_spec(real_name)
-                if spec is not None:
-                    return spec
-            except Exception:
-                pass
-        return None
+# 1. Fallback for opentelemetry._events if missing in installed opentelemetry package
+try:
+    import opentelemetry._events
+except ImportError:
+    otel_events = types.ModuleType("opentelemetry._events")
+    class Event:
+        def __init__(self, *args, **kwargs):
+            pass
+    otel_events.Event = Event
+    sys.modules["opentelemetry._events"] = otel_events
 
-if not any(isinstance(f, _GriffeRedirectFinder) for f in sys.meta_path):
-    sys.meta_path.insert(0, _GriffeRedirectFinder())
-
+# 2. Complete _griffe module aliasing for pydantic-ai compatibility
 try:
     import griffe
-    import griffe.enumerations
-    import griffe.models
-
     sys.modules["_griffe"] = griffe
-    sys.modules["_griffe.enumerations"] = griffe.enumerations
-    sys.modules["_griffe.models"] = griffe.models
+    sys.modules["_griffe.enumerations"] = griffe
+    sys.modules["_griffe.models"] = griffe
+    sys.modules["_griffe.dataclasses"] = griffe
+    sys.modules["_griffe.expressions"] = griffe
+    sys.modules["_griffe.extensions"] = griffe
+    sys.modules["_griffe.agents"] = griffe
+    sys.modules["_griffe.docstrings"] = griffe
+
+    setattr(griffe, "enumerations", griffe)
+    setattr(griffe, "models", griffe)
+    setattr(griffe, "dataclasses", griffe)
+    setattr(griffe, "expressions", griffe)
 except Exception:
     pass
