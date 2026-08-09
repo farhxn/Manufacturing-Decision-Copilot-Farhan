@@ -487,6 +487,23 @@ def process_document(self, document_id: str) -> dict:
         logger.info("Extracting text", document_id=document_id, file_type=file_type)
 
         if not Path(file_path).exists():
+            # Fallback: retrieve file bytes from Redis if uploaded on another host (e.g. Vercel)
+            try:
+                import redis
+                from app.core.config import settings
+
+                r_client = redis.from_url(settings.redis_url)
+                cached_bytes = r_client.get(f"doc_bytes:{document_id}")
+                r_client.close()
+
+                if cached_bytes:
+                    Path(file_path).parent.mkdir(parents=True, exist_ok=True)
+                    Path(file_path).write_bytes(cached_bytes)
+                    logger.info("Restored document bytes from Redis fallback", document_id=document_id)
+            except Exception as exc:
+                logger.warning("Failed to retrieve document bytes from Redis fallback", document_id=document_id, error=str(exc))
+
+        if not Path(file_path).exists():
             raise FileNotFoundError(f"File not found on disk: {file_path}")
 
         pages = _extract_text(file_path, file_type)

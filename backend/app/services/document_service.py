@@ -87,6 +87,15 @@ class DocumentService:
         saved = await self.document_repo.create(document)
         await self.document_repo.session.commit()
 
+        # Cache file bytes in Redis for 1 hour so remote workers (e.g. Railway) can access them
+        try:
+            import redis
+            r_client = redis.from_url(settings.redis_url)
+            r_client.setex(f"doc_bytes:{saved.id}", 3600, file_bytes)
+            r_client.close()
+        except Exception as exc:
+            logger.warning("Could not cache doc_bytes in Redis", document_id=saved.id, error=str(exc))
+
         # 4. Enqueue Celery task
         from app.workers.document_worker import process_document
         task = process_document.delay(saved.id)
