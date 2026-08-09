@@ -18,7 +18,12 @@ deterministic result (see recommendation_service.py).
 
 from __future__ import annotations
 
-from typing import Any
+import sys
+try:
+    import griffe
+    sys.modules["_griffe"] = griffe
+except ImportError:
+    pass
 
 try:
     from pydantic_ai import Agent
