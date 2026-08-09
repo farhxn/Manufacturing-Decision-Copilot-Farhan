@@ -2,6 +2,7 @@
 docs/
 .agents/
 sample-data/
+scripts/generate_submission_report.py
 
 # Environment files
 .env

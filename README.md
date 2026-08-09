@@ -1,72 +1,177 @@
-# Hackathon Submission
-## Manufacturing Decision Copilot
-### Track: Manufacturing Procurement Intelligence
+# Manufacturing Decision Copilot
 
-🌐 **Live Production App:** [https://manufacturing-decision-copilot-farhan.vercel.app/dashboard](https://manufacturing-decision-copilot-farhan.vercel.app/dashboard)
+> **AI explains. Math decides. Humans approve.**
 
----
-
-## What We Built
-
-**Manufacturing Decision Copilot** is an evidence-backed procurement intelligence platform that helps manufacturing teams select the right supplier — and explain why — in seconds rather than hours.
-
-It replaces manual spreadsheet comparison with a system that:
-- Ingests supplier quotations, certificates, and audit documents via a PDF processing pipeline
-- Scores every supplier across 6 dimensions using deterministic rule engines (pure Python, no AI in the math)
-- Retrieves supporting evidence from documents using hybrid BM25 + vector + Reciprocal Rank Fusion retrieval
-- Generates an AI narrative explanation backed by cited document chunks (never invented facts)
-- Simulates "what-if" scenarios (shipping shocks, tariff changes, supplier removal) in under 2 milliseconds
-- Produces a board-ready PDF executive report with a single click
-
-The core design principle: **AI explains. Math decides. Humans approve.**
+An evidence-backed procurement intelligence platform that turns 10 supplier quotations, certificates, and audit documents into a clear, auditable, confidence-scored recommendation — in under 30 seconds.
 
 ---
 
-## Submission Checklist
+## Live Application
 
-Every item required by the submission brief is addressed in the documents below.
+| | |
+|---|---|
+| **Dashboard** | https://manufacturing-decision-copilot-farhan.vercel.app/dashboard |
+| **Suppliers** | https://manufacturing-decision-copilot-farhan.vercel.app/suppliers |
+| **Scenarios** | https://manufacturing-decision-copilot-farhan.vercel.app/scenarios |
+| **Documents** | https://manufacturing-decision-copilot-farhan.vercel.app/documents |
+| **Reports** | https://manufacturing-decision-copilot-farhan.vercel.app/reports |
 
-| # | Required Deliverable | Document | Status |
-|---|---|---|---|
-| 1 | Working end-to-end prototype for one primary track | [Live Demo App](https://manufacturing-decision-copilot-farhan.vercel.app/dashboard) + [Setup](#3-setup-and-run) | ✅ |
-| 2 | Source code and reproducible setup instructions | [Setup instructions](#3-setup-and-run) + `submission/02_data_source_manifest.md §5` | ✅ |
-| 3 | Concise architecture and data-flow explanation | [`submission/01_architecture_and_dataflow.md`](submission/01_architecture_and_dataflow.md) | ✅ |
-| 4 | Data/source manifest covering challenge pack and external inputs | [`submission/02_data_source_manifest.md`](submission/02_data_source_manifest.md) | ✅ |
-| 5 | Baseline comparison and quantitative evaluation results | [`submission/03_evaluation_results.md`](submission/03_evaluation_results.md) | ✅ |
-| 6 | Demonstration of success, ambiguous, and failure/fallback cases | [`submission/04_case_demonstrations.md`](submission/04_case_demonstrations.md) | ✅ |
-| 7 | Intended-user statement, assumptions, limitations, human-approval points | [`submission/05_users_assumptions_limitations.md`](submission/05_users_assumptions_limitations.md) | ✅ |
-| 8 | Short presentation explaining decision, evidence, and business value | [`submission/06_presentation_script.md`](submission/06_presentation_script.md) | ✅ |
+The live app is pre-seeded with 10 suppliers across 7 countries, 17 challenge-pack documents, and 3 pre-configured scenarios. The recommendation, scenario engine, evidence citations, and confidence score are all live and interactive.
+
+---
+
+## What the Dashboard Shows
+
+When you open the live dashboard you see:
+
+**Recommendation Card** — Animated composite score gauge (0–100), winner name, confidence badge (High/Medium/Low), AI-generated narrative with pros, cons, tradeoffs, and risks. Every data point is a clickable citation — tap any number to see the exact PDF page and paragraph it came from.
+
+**Score Breakdown** — Six-dimension bar chart: cost · quality · delivery · risk · capability · compliance. Each bar shows the raw score and its weighted contribution to the final ranking.
+
+**Supplier Landscape Table** — All 10 suppliers ranked, with compliance flags highlighted. Suppliers with missing or expired certifications show compliance = 0 in red. AlphaForge (zero certs) and PeakMetal (expired ISO cert) are visible at the bottom with the exact reason surfaced.
+
+**Scenario Simulator** — Drag the shipping-cost slider to +40% and watch rankings recalculate in real time. FastTrack Manufacturing (Mexico) is the only supplier whose score *increases* because its $4 truck freight is nearly immune to maritime shipping shocks. The AI explains the change in plain English below the chart.
+
+**Confidence Breakdown** — Deterministic 5-factor confidence score (extraction quality, evidence coverage, retrieval quality, rule agreement, data completeness). The LLM never produces this number.
+
+---
+
+## Key Numbers at a Glance
+
+| Metric | Value |
+|---|---|
+| Suppliers evaluated | 10 across 7 countries |
+| Challenge pack documents | 17 (quotations, certificates, audit report, tech spec) |
+| Composite score — winner (FastTrack Manufacturing) | **93.37 / 100** |
+| Composite score — runner-up (Acme Precision Mfg) | **91.89 / 100** |
+| Confidence — winner | **87.6% — High** |
+| Ranking engine latency | **~2 ms** (target was 50 ms) |
+| Unit tests | **501 passing, 0 failures** |
+| Injection patterns blocked | **7** |
+| Scoring engines | **9** (all pure Python, zero AI) |
+| PydanticAI output schemas | **5** (all Pydantic v2 validated) |
+| Suppliers auto-disqualified by compliance | **2** (AlphaForge: zero certs · PeakMetal: expired cert) |
+
+---
+
+## Baseline Ranking — Live Engine Output
+
+Scores produced by running `score_suppliers()` on the seeded dataset. Reproducible with `python scripts/seed_db_production.py && pytest tests/unit/`.
+
+| Rank | Supplier | Country | Score | Landed Cost | Compliance |
+|---|---|---|---|---|---|
+| **1** | **FastTrack Manufacturing** | Mexico | **93.37** | $112.00 | ✅ ISO+RoHS+IATF |
+| 2 | Acme Precision Mfg | Germany | 91.89 | $121.75 | ✅ ISO+AS9100D+RoHS |
+| 3 | NovaCast Engineering | Poland | 90.61 | $117.95 | ✅ ISO+AS9100D |
+| 4 | VoltEdge Components | South Korea | 87.60 | $132.48 | ✅ ISO+IATF |
+| 5 | TechForge Industries | Taiwan | 84.74 | $139.54 | ✅ ISO+RoHS |
+| 6 | Reliable Parts Co | India | 83.32 | $133.07 | ✅ ISO+IATF |
+| 7 | AlphaForge Ltd | Canada | 79.77 | $107.30 | ❌ Zero certs → compliance = 0 |
+| 8 | SteelPath Industries | Brazil | 79.52 | $121.28 | ✅ ISO only |
+| 9 | Global Fabrication Ltd | China | 77.02 | $146.25 | ✅ ISO only (highest landed cost) |
+| 10 | PeakMetal Solutions | Vietnam | 70.02 | $108.10 | ❌ Expired ISO → compliance = 0 |
+
+> AlphaForge has the cheapest landed cost ($107.30) but zero certifications → compliance_score = 0 → ranked #7.
+> PeakMetal has the second-cheapest landed cost ($108.10) but an expired ISO cert → ranked last.
+> Global Fabrication has the cheapest unit price ($89) but 25% US duty pushes landed cost to the highest in the field ($146.25).
+
+---
+
+## Scenario Engine — Shipping Shock +40%
+
+When international shipping costs rise 40% (Red Sea–style disruption) and lead times extend 7 days:
+
+| Supplier | Score Change | Why |
+|---|---|---|
+| FastTrack Manufacturing | **+0.15** (only supplier to go up) | $4 truck freight — 40% of $4 is $1.60 extra |
+| Acme Precision Mfg | −0.82 | $22 air freight — 40% of $22 is $8.80 extra |
+| PeakMetal Solutions | −2.04 (largest drop) | High base shipping $30 + worst delivery metrics |
+
+The near-shore thesis is proven in real time: Mexico (FastTrack) and Poland (NovaCast) gain structural advantage under freight stress. [Test this live on the Scenarios page →](https://manufacturing-decision-copilot-farhan.vercel.app/scenarios)
+
+---
+
+## Three Demonstration Cases
+
+### Case 1 — Success (FastTrack Manufacturing)
+Clear #1 winner at 93.37 with 87.6% High confidence. Evidence retrieval completes in a single loop. All 4 evidence chunks trace to exact PDF pages. Recommendation is fully auditable and immediately actionable.
+
+### Case 2 — Ambiguous (FastTrack vs Acme — 1.48-point gap)
+FastTrack wins mathematically but Acme holds AS9100D aerospace certification that FastTrack lacks. The system detects this, drops confidence to ~72% Medium, surfaces the hidden disqualifier in the recommendation's `risks` and `assumptions` fields, and shows a one-click test: adding AS9100D as a required cert inverts the winner.
+
+### Case 3 — Failure/Fallback (PeakMetal Solutions — expired cert)
+PeakMetal's ISO 9001 expired December 2024. The system automatically detects `is_valid=False`, scores compliance = 0, ranks it last, shows the specific cert name/issuer/expiry in the UI, and suggests a cert-override scenario showing it would rise to ~#3 if recertified. Redis fallback delivers the deterministic ranking if the LLM is unavailable.
+
+---
+
+## Architecture
+
+```
+Browser / Next.js 15  (Vercel)
+    │  REST /api/v1
+    ▼
+FastAPI 0.141  (Railway)
+    ├── Routes         validate + call service (zero business logic)
+    ├── Services       business workflow orchestration
+    ├── Repositories   DB I/O only
+    ├── Engines ──────────────────────────── pure Python, no AI, no I/O
+    │   cost · quality · delivery · risk
+    │   compliance · capability · ranking
+    │   scenario · confidence
+    ├── AI Layer  ────────────────────────── explanation only, never scores
+    │   PydanticAI → Gemini 2.0 Flash / GPT-4o / Groq / Ollama
+    │   Hybrid retrieval: ChromaDB cosine + BM25 + RRF + Self-RAG loop
+    │   Guardrails: 7 injection patterns stripped; Pydantic v2 schema enforcement
+    └── Workers        Celery + Redis
+                       PDF → chunks → embeddings → ChromaDB → extraction → PostgreSQL
+
+Databases
+  PostgreSQL 16   source of truth
+  ChromaDB 0.5    vector index (HNSW cosine, 384-dim bge-small-en-v1.5)
+  Redis 7         job queue + recommendation cache (TTL 5 min)
+```
+
+---
+
+## Scoring Formula
+
+```
+final_score = cost_score       × 0.30   ← deterministic engine, no AI
+            + quality_score    × 0.20
+            + delivery_score   × 0.15
+            + risk_score       × 0.15
+            + capability_score × 0.10
+            + compliance_score × 0.10   ← 0 if any required cert missing/expired
+
+risk_score  = 100 − (financial×0.25 + country×0.20 + supply×0.20
+                   + compliance×0.20 + capacity×0.15)
+
+confidence  = extraction_quality×0.30 + evidence_coverage×0.20
+            + retrieval_quality×0.20  + rule_agreement×0.20
+            + data_completeness×0.10   ← LLM never produces this number
+```
+
+All weights are configurable per project. The LLM never reads, modifies, or influences any score.
 
 ---
 
 ## Submission Documents
 
-### [01 — Architecture and Data-Flow](submission/01_architecture_and_dataflow.md)
-Full system architecture: component descriptions, the 9 deterministic scoring engines with their exact formulas, the hybrid RAG pipeline (ChromaDB + BM25 + RRF + Self-RAG loop), the Celery document processing pipeline, the 5 PydanticAI agents, prompt injection guardrails, database schema summary, and deployment topology.
+The complete submission package is in the `submission/` directory:
 
-### [02 — Data and Source Manifest](submission/02_data_source_manifest.md)
-Complete inventory of: 17 challenge pack documents with their purpose and extraction targets; all 10 supplier master records with landed cost, risk scores, and certification tables; the 3 scenario definitions; all external AI/embedding services used and what data is sent to them; ChromaDB chunk metadata schema; and step-by-step reproducible setup instructions.
-
-### [03 — Baseline Comparison and Quantitative Evaluation Results](submission/03_evaluation_results.md)
-Live engine output for all three scenarios with actual scores from the running code. Includes: full 10-supplier baseline ranking table with all 6 dimension scores; Shipping Shock (+40%) scenario with score deltas; China Tariff (+50%) scenario with winner change; human-vs-system comparison table; performance benchmarks (501 unit tests, all passing; ranking engine ~2ms vs 50ms target); and complete test coverage summary by module.
-
-### [04 — Case Demonstrations](submission/04_case_demonstrations.md)
-Three required demonstration cases:
-- **Case 1 — Success:** FastTrack Manufacturing scores 93.37 with 87.6% High confidence. Single-pass evidence retrieval. All dimension scores populated from document data. Fully auditable, immediately actionable recommendation.
-- **Case 2 — Ambiguous:** FastTrack vs Acme Precision — 1.48-point gap. AS9100D hidden disqualifier surfaces. Confidence drops to ~72% Medium. System names the conflict, quantifies tradeoffs, and triggers sensitivity banner rather than presenting false certainty.
-- **Case 3 — Failure/Fallback:** PeakMetal Solutions — expired ISO 9001 cert detected, compliance_score = 0, supplier ranked #10. System explains the specific failure (cert name, issuer, expiry date), suggests a cert-override scenario path, and continues ranking all other suppliers normally. Redis fallback documented.
-
-### [05 — Intended Users, Assumptions, Limitations, and Human-Approval Points](submission/05_users_assumptions_limitations.md)
-Four intended user profiles (Procurement Manager, Manufacturing Engineer, Operations Manager, Executive). Three assumption categories (data quality, scoring model, AI behaviour). Three limitation categories (data, AI, operational). Seven numbered Human-Approval Points (HAP-1 through HAP-7): supplier onboarding, compliance disqualification, low confidence, narrow margin, scenario winner change, report review before distribution, and final PO issuance. Explicit "What the System Will Not Do" list.
-
-### [06 — Presentation Script and Slide Notes](submission/06_presentation_script.md)
-Full 7-minute presentation script with per-slide speaker notes, 4 live demo beats with exact UI actions and narration, business value framing, and 6 prepared Q&A answers (hallucination prevention, API fallback, FastTrack win rationale, confidence formula, scalability). Pre-demo 10-item checklist included.
+| Document | Content |
+|---|---|
+| [`SUBMISSION_REPORT.pdf`](submission/SUBMISSION_REPORT.pdf) | **Full PDF report — all sections, live engine data, formulas, cases, architecture** |
+| [`01_architecture_and_dataflow.md`](submission/01_architecture_and_dataflow.md) | System architecture, 9 engine formulas, RAG pipeline, guardrails, DB schema |
+| [`02_data_source_manifest.md`](submission/02_data_source_manifest.md) | 17 documents, 10 supplier records, 3 scenarios, external services, setup guide |
+| [`03_evaluation_results.md`](submission/03_evaluation_results.md) | Live engine output — all 3 scenarios, 501 test results, benchmarks |
+| [`04_case_demonstrations.md`](submission/04_case_demonstrations.md) | Success · Ambiguous · Failure/Fallback cases with full score walkthroughs |
+| [`05_users_assumptions_limitations.md`](submission/05_users_assumptions_limitations.md) | 4 user types, 7 Human-Approval Points, limitations, system boundaries |
+| [`06_presentation_script.md`](submission/06_presentation_script.md) | 7-minute script, 4 demo beats, 6 Q&A answers, pre-demo checklist |
 
 ---
 
-## 3. Setup and Run
-
-Full instructions are in [`submission/02_data_source_manifest.md §5`](submission/02_data_source_manifest.md). Quick reference:
+## Setup and Run
 
 ```bash
 # Prerequisites: Python 3.12+, Node.js 18+, PostgreSQL 16+, Redis 7+
@@ -75,113 +180,92 @@ Full instructions are in [`submission/02_data_source_manifest.md §5`](submissio
 cd backend
 python -m venv venv && venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env          # add GEMINI_API_KEY and DATABASE_URL
+cp .env.example .env          # set GEMINI_API_KEY + DATABASE_URL
 alembic upgrade head
 
-# Seed database (10 suppliers, 3 scenarios, 17 document records)
+# Seed (10 suppliers, 3 scenarios, 17 document records)
 cd ..
 python scripts/seed_db_production.py
-
-# Generate sample PDFs
 python scripts/generate_production_pdfs.py
 
-# Start backend + worker (two terminals)
+# Start
 cd backend
 uvicorn app.main:app --reload --port 8000
+# separate terminal:
 celery -A app.workers.celery_app worker --loglevel=info
 
 # Frontend
-cd frontend
-npm install && npm run dev    # http://localhost:3000
+cd frontend && npm install && npm run dev
+# Open http://localhost:3000/dashboard
 
 # Verify
 curl http://localhost:8000/api/v1/health
+pytest tests/unit/ -q    # → 501 passed in 2.50s
 ```
 
-**Minimum required to run the demo:** `GEMINI_API_KEY` (free from [Google AI Studio](https://aistudio.google.com)) and a PostgreSQL connection string. The embedding model (`BAAI/bge-small-en-v1.5`) runs locally — no OpenAI key is needed for embeddings.
+**Minimum required:** `GEMINI_API_KEY` (free — [Google AI Studio](https://aistudio.google.com)) and a PostgreSQL connection string. The default embedding model (`BAAI/bge-small-en-v1.5`) runs fully locally — no OpenAI key needed.
 
 ---
 
-## 4. Repository Structure
+## Repository Structure
 
 ```
 SGTDP/
 ├── backend/
 │   ├── app/
-│   │   ├── api/v1/          # FastAPI routers (suppliers, documents,
-│   │   │                    #   recommendations, scenarios, reports,
-│   │   │                    #   evidence, dashboard, health)
+│   │   ├── api/v1/          # FastAPI routers
 │   │   ├── engines/         # 9 pure-Python deterministic engines
-│   │   │   ├── cost.py      #   landed cost + cost score
-│   │   │   ├── quality.py   #   defect rate, inspection, rating
-│   │   │   ├── delivery.py  #   lead time, on-time %, capacity
-│   │   │   ├── risk.py      #   5-factor weighted risk + breakdown
-│   │   │   ├── compliance.py#   cert check + auto-disqualification
-│   │   │   ├── capability.py#   capability match + engineering bonus
-│   │   │   ├── confidence.py#   5-factor confidence score
-│   │   │   ├── ranking.py   #   orchestrator: score_suppliers()
-│   │   │   ├── scenario.py  #   ScenarioConfig → ScenarioResult
-│   │   │   └── types.py     #   shared dataclasses
-│   │   ├── ai/
-│   │   │   ├── client.py    #   PydanticAI multi-provider LLM client
-│   │   │   ├── embeddings.py#   pluggable embedding provider
-│   │   │   ├── retriever.py #   hybrid retrieval + Self-RAG loop
-│   │   │   ├── reranker.py  #   RankedChunk + RRF fusion
-│   │   │   ├── guardrails.py#   injection stripping + output validation
-│   │   │   ├── schemas.py   #   5 Pydantic output schemas
-│   │   │   └── prompts/v1/  #   prompt templates per agent
-│   │   ├── core/            #   config, logging, dependencies
-│   │   ├── database/        #   PostgreSQL session, ChromaDB client
-│   │   ├── models/          #   SQLAlchemy ORM models
-│   │   ├── services/        #   business workflow layer
-│   │   └── workers/         #   Celery document processing pipeline
-│   ├── alembic/             #   database migrations
+│   │   ├── ai/              # PydanticAI agents, retriever, guardrails
+│   │   ├── core/            # config, logging, dependencies
+│   │   ├── database/        # PostgreSQL session, ChromaDB client
+│   │   ├── models/          # SQLAlchemy ORM models
+│   │   ├── services/        # business workflow layer
+│   │   └── workers/         # Celery document processing pipeline
+│   ├── alembic/             # database migrations
 │   ├── tests/
-│   │   ├── unit/            #   501 tests across all 9 engines + AI layer
-│   │   ├── smoke_phase*.py  #   smoke tests per build phase
-│   │   └── integration/     #   API integration tests
+│   │   ├── unit/            # 501 tests across all engines + AI layer
+│   │   ├── smoke_phase*.py  # smoke tests per build phase
+│   │   └── integration/     # API integration tests
 │   └── requirements.txt
 ├── frontend/
 │   └── src/app/
-│       ├── dashboard/       #   hero decision intelligence view
-│       ├── suppliers/       #   supplier list + detail pages
-│       ├── documents/       #   upload zone + PDF viewer
-│       ├── scenarios/       #   full scenario simulator
-│       └── reports/         #   executive report generation
+│       ├── dashboard/       # hero decision intelligence view
+│       ├── suppliers/       # supplier list + detail pages
+│       ├── documents/       # upload zone + PDF viewer
+│       ├── scenarios/       # full scenario simulator
+│       └── reports/         # executive report generation
 ├── scripts/
-│   ├── seed_db_production.py    # seeds 10 suppliers + 3 scenarios
-│   └── generate_production_pdfs.py
-├── docs/                    # 22 specification documents
+│   ├── seed_db_production.py         # seeds 10 suppliers + 3 scenarios
+│   ├── generate_production_pdfs.py   # generates challenge pack PDFs
+│   └── generate_submission_report.py # generates submission/SUBMISSION_REPORT.pdf
+├── docs/                    # 22 specification documents (gitignored)
 ├── sample-data/             # challenge pack PDFs (gitignored)
-└── submission/              # hackathon submission documents (all deliverables)
+├── submission/              # hackathon submission documents
+└── .agents/                 # Kiro agent rules (gitignored)
 ```
 
 ---
 
-## 5. Key Technical Facts
+## Technology Stack
 
-| Fact | Detail |
-|---|---|
-| Primary language | Python 3.12 (backend), TypeScript strict (frontend) |
-| API framework | FastAPI 0.141.1 with Pydantic v2 |
-| Frontend framework | Next.js 15 App Router |
-| Default LLM provider | Google Gemini 2.0 Flash (free tier) |
-| Fallback LLM providers | OpenAI GPT-4o · Groq Llama-3.3-70b · Ollama (offline) |
-| Default embedding model | BAAI/bge-small-en-v1.5 (local, 384-dim, no API key) |
-| Vector database | ChromaDB 0.5.23 (cosine similarity, HNSW) |
-| Relational database | PostgreSQL 16+ via asyncpg + SQLAlchemy 2+ |
-| Task queue | Celery 5 + Redis 7 |
-| Retrieval strategy | Hybrid: ChromaDB cosine + BM25Okapi + RRF (k=60) |
-| Self-RAG loop | Up to 3 iterations; LLM grader refines query if coverage < 0.025 |
-| Scoring engines | 9 pure Python engines, zero I/O, zero AI |
-| Unit tests | 501 tests, 0 failures (2.50 s runtime) |
-| Ranking latency | ~2 ms for 10 suppliers (target was 50 ms) |
-| Injection patterns blocked | 7 (ignore_previous, you_are_now, new_instructions, system_prompt_leak, role_injection, act_as, jailbreak_dan) |
-| AI output schemas | 5 (RecommendationOutput, ScenarioExplanation, ExecutiveSummary, ComparisonOutput, SupplierExtraction) |
-| Confidence engine | Deterministic 5-factor formula — LLM never produces a confidence number |
+| Layer | Technology | Version |
+|---|---|---|
+| API | FastAPI | 0.141.1 |
+| Runtime | Python | 3.12+ |
+| Frontend | Next.js App Router | 15+ |
+| UI | shadcn/ui + Tailwind CSS | v4 |
+| LLM (default) | Gemini 2.0 Flash | google-genai 0.1 |
+| LLM (fallback) | GPT-4o · Groq · Ollama | — |
+| Embeddings | BAAI/bge-small-en-v1.5 | local, 384-dim |
+| AI Orchestration | PydanticAI | 0.0.14+ |
+| Vector DB | ChromaDB | 0.5.23 |
+| Relational DB | PostgreSQL | 16+ |
+| Task Queue | Celery + Redis | 5.4 / 5.2 |
+| ORM + Migrations | SQLAlchemy async + Alembic | 2.0 / 1.14 |
+| PDF Parsing | PyMuPDF | 1.24.14 |
+| Keyword Search | rank-bm25 BM25Okapi | 0.2.2 |
+| Testing | pytest | 8.3.4 |
 
 ---
 
-## 6. The One-Sentence Business Case
-
-Manufacturing Decision Copilot turns a 3-hour manual procurement evaluation into a 30-second evidence-backed recommendation that every stakeholder can read, challenge, and approve with confidence.
+*The PDF report at [`submission/SUBMISSION_REPORT.pdf`](submission/SUBMISSION_REPORT.pdf) contains every section above plus live-generated score tables, architecture diagrams, and full formula documentation in a single printable document.*
